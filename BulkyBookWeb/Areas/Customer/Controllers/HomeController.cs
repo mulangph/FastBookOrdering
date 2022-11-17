@@ -1,7 +1,7 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
+using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,8 +28,13 @@ public class HomeController : Controller
 
     public IActionResult Details(int id)
     {
-   
-        return View();
+        ShoppingCart cartObj = new()
+        {
+            Count = 1,
+            Product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id, includeProperties: "Category,CoverType"),
+        };
+
+        return View(cartObj);
     }
 
     public IActionResult Privacy()
